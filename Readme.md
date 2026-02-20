@@ -41,14 +41,15 @@ Download the apk or build via Android studio.
 
 ### Allow display over other apps
 
-By default Android does not allow apps to dispay over other apps
+By default Android does not allow apps to display over other apps.
 
 Here is one way to disable battery optimization for Gotify.
 
-* Open "Settings"
-* Search for "Apps"
-* Find "PaniK" and select Advanced
-* Allow Display over other apps
+* Open PaniK and tap **Allow display over other apps** (new button in the main UI), or:
+  * Open "Settings"
+  * Search for "Apps"
+  * Find "PaniK" and select Advanced
+  * Allow Display over other apps
 
 ## Building
 
@@ -64,6 +65,5 @@ $ ./gradlew build
 * Fix compile error in `client/src/main/java/com/github/gotify/client/auth/OAuthOkHttpClient.java` (caused by an updated dependency)
 * Delete `client/settings.gradle` (client is a gradle sub project and must not have a settings.gradle)
 * Commit changes
-
 
 
