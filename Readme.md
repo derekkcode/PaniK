@@ -43,7 +43,7 @@ Download the apk or build via Android studio.
 
 By default Android does not allow apps to display over other apps.
 
-Here is one way to disable battery optimization for Gotify.
+Here is one way to allow display over other apps for PaniK.
 
 * Open PaniK and tap **Allow display over other apps** (new button in the main UI), or:
   * Open "Settings"
@@ -65,5 +65,4 @@ $ ./gradlew build
 * Fix compile error in `client/src/main/java/com/github/gotify/client/auth/OAuthOkHttpClient.java` (caused by an updated dependency)
 * Delete `client/settings.gradle` (client is a gradle sub project and must not have a settings.gradle)
 * Commit changes
-
 

@@ -182,11 +182,7 @@ public class userActivity extends Activity{
             Button overlayPermissionButton = findViewById(R.id.button_overlay_permission);
 
             updateOverlayStatus();
-            overlayPermissionButton.setOnClickListener(v -> {
-                Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + getPackageName()));
-                startActivity(overlayIntent);
-            });
+            overlayPermissionButton.setOnClickListener(v -> openOverlayPermissionSettings());
 
             /* Send Alert. */
             Button fire = findViewById(R.id.Fire);
@@ -198,9 +194,7 @@ public class userActivity extends Activity{
                                 Toast.makeText(userActivity.this,
                                         getString(R.string.overlay_permission_required_toast),
                                         Toast.LENGTH_LONG).show();
-                                Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                        Uri.parse("package:" + getPackageName()));
-                                startActivity(overlayIntent);
+                                openOverlayPermissionSettings();
                                 return;
                             }
                             Context context = getApplicationContext();
@@ -231,6 +225,12 @@ public class userActivity extends Activity{
         overlayStatus.setText(canShowOverApps
                 ? getString(R.string.overlay_permission_granted)
                 : getString(R.string.overlay_permission_not_granted));
+    }
+
+    private void openOverlayPermissionSettings() {
+        Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName()));
+        startActivity(overlayIntent);
     }
 
     public void onFire(CellBroadcastAlertService CBS, Context context, Activity activity, int serviceCategory,  String body, int priority, int Type) {
