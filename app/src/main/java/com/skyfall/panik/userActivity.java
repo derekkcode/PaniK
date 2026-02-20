@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +17,8 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.skyfall.panik.CBUtils.ETWS;
 import com.skyfall.panik.CBUtils.SmsCbCmasInfo;
@@ -23,6 +28,7 @@ import com.skyfall.panik.CBUtils.SmsCbLocation;
 import com.skyfall.panik.CBUtils.SmsCbMessage;
 
 public class userActivity extends Activity{
+        private TextView overlayStatus;
 
         private static int getSerialNumber() {
             int messageId = 0;
@@ -172,12 +178,25 @@ public class userActivity extends Activity{
             @SuppressLint("UseSwitchCompatOrMaterialCode") Switch delayCheck = findViewById(R.id.switch1);
 
             Activity activity = this;
+            overlayStatus = findViewById(R.id.overlay_status);
+            Button overlayPermissionButton = findViewById(R.id.button_overlay_permission);
+
+            updateOverlayStatus();
+            overlayPermissionButton.setOnClickListener(v -> openOverlayPermissionSettings());
 
             /* Send Alert. */
             Button fire = findViewById(R.id.Fire);
             fire.setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                                    && !Settings.canDrawOverlays(userActivity.this)) {
+                                Toast.makeText(userActivity.this,
+                                        getString(R.string.overlay_permission_required_toast),
+                                        Toast.LENGTH_LONG).show();
+                                openOverlayPermissionSettings();
+                                return;
+                            }
                             Context context = getApplicationContext();
                             if (delayCheck.isChecked()){
                                 final Handler handler = new Handler();
@@ -190,6 +209,29 @@ public class userActivity extends Activity{
                         }
                     });
         }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateOverlayStatus();
+    }
+
+    private void updateOverlayStatus() {
+        if (overlayStatus == null) {
+            return;
+        }
+        boolean canShowOverApps = Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                || Settings.canDrawOverlays(this);
+        overlayStatus.setText(canShowOverApps
+                ? getString(R.string.overlay_permission_granted)
+                : getString(R.string.overlay_permission_not_granted));
+    }
+
+    private void openOverlayPermissionSettings() {
+        Intent overlayIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName()));
+        startActivity(overlayIntent);
+    }
 
     public void onFire(CellBroadcastAlertService CBS, Context context, Activity activity, int serviceCategory,  String body, int priority, int Type) {
         Intent AlertIntent = new Intent(this, CellBroadcastAlertService.class);

@@ -355,4 +355,9 @@
     <!-- Emergency alert message copied to clipboard. -->
     <string name="message_copied" translatable="false">Message copied</string>
     <string name="app_name" translatable="false">PaniK</string>
+    <string name="ui_title" translatable="false">Send CMAS / ETWS Alerts</string>
+    <string name="overlay_permission_button_text" translatable="false">Allow display over other apps</string>
+    <string name="overlay_permission_granted" translatable="false">Display over other apps: granted</string>
+    <string name="overlay_permission_not_granted" translatable="false">Display over other apps: not granted</string>
+    <string name="overlay_permission_required_toast" translatable="false">Enable \"display over other apps\" to show alerts on top.</string>
 </resources>
